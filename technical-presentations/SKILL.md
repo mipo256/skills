@@ -12,6 +12,7 @@ Use this skill when authoring or revising technical presentations.
 - Build the presentation with Slidev unless the user explicitly asks for another format.
 - Prefer progressive disclosure both across slides and inside slides.
 - Treat viewport overflow and tiny text as bugs. If a slide feels crowded, split it.
+- Treat scrollable text or code on slides as a design failure in most cases. Avoid it whenever possible.
 - Keep contrast high between background and foreground, and between neighboring visual elements.
 - Keep fonts large enough for people sitting far from the screen.
 - Prefer visuals over words whenever a concept can be shown instead of narrated.
@@ -58,7 +59,8 @@ Not every story needs all five beats, but the audience should always feel guided
 - Omit imports, getters/setters, boilerplate, and unrelated branches unless they matter for the explanation.
 - Shorten names and surrounding context only if the meaning stays clear.
 - Prefer one focused snippet per slide.
-- If the snippet is still too tall or dense, split it across slides or replace part of it with a diagram or diff-style comparison.
+- If the snippet is still too tall or dense, first remove non-essential lines. Then reformat it so it fits the viewport cleanly if possible.
+- If it still does not fit, split it across slides or replace part of it with a diagram or diff-style comparison instead of making the slide scroll.
 
 ## Viewport and readability check
 
@@ -68,7 +70,8 @@ Before finishing presentation work, review every changed slide with these questi
 2. Is the font size large enough for an audience at the back of the room?
 3. Is the visual contrast strong enough at a glance?
 4. Can the audience understand the slide quickly, or is there too much to read?
-5. Would two slides communicate this better than one?
+5. Is any slide relying on scrollable text or code that should be trimmed, reformatted, or split instead?
+6. Would two slides communicate this better than one?
 
 If the answer is poor on any of these checks, fix the slide before considering the work done.
 
