@@ -22,14 +22,16 @@ Use this skill when authoring or revising technical presentations.
 
 ## Recommended workflow
 
-1. Start with a deck outline.
-2. Split the deck into sections.
-3. Inside each section, define short stories:
+1. Scan `package.json` or the equivalent project file first to understand how this Slidev project is built, previewed, or validated.
+2. Start with a deck outline.
+3. Split the deck into sections.
+4. Inside each section, define short stories:
    - one story = one concept, mechanism, example, or comparison
    - typical story length = 4-10 slides
    - slides inside the story should reveal the idea step by step
-4. End each section with a short micro-conclusion slide.
-5. End the deck with overall conclusions.
+5. End each section with a short micro-conclusion slide.
+6. End the deck with overall conclusions.
+7. After making changes, run the project's real build or validation command and make sure it succeeds.
 
 ## Story pattern
 
@@ -75,7 +77,9 @@ Before finishing presentation work, review every changed slide with these questi
 
 If the answer is poor on any of these checks, fix the slide before considering the work done.
 
-If tooling is available, preview or build the deck after substantial edits. Even with preview, do not accept borderline density.
+Do not guess the build command. Read `package.json` or the equivalent project file and use the project's actual build or validation command.
+
+After substantial edits, run that build or validation command and make sure it succeeds. Previewing the deck is helpful, but it does not replace a successful build check. Even with preview, do not accept borderline density.
 
 ## Quality bar
 
@@ -91,3 +95,5 @@ Before wrapping up, make sure the deck has:
 - minimal code snippets
 - visuals preferred over text where possible
 - no overcrowded slides
+- the project's build command was identified from `package.json` or an equivalent file
+- the deck builds successfully after the changes
