@@ -64,6 +64,8 @@ Not every story needs all five beats, but the audience should always feel guided
 - If the snippet is still too tall or dense, first remove non-essential lines. Then reformat it so it fits the viewport cleanly if possible.
 - If it still does not fit, split it across slides or replace part of it with a diagram or diff-style comparison instead of making the slide scroll.
 
+**Highlightable code in Slidev:** When you write code samples for Slidev, structure them so a person (or a later edit, including by an assistant) can attach highlighting or emphasis to **specific** fragments—lines, tokens, or regions—not only to the whole block. A single fenced markdown block (e.g. opening with ` ```java `) is one opaque unit and is awkward to annotate inside. Prefer HTML structure instead: normal elements such as `<div>`, `<span>`, `<pre>`, or other markup the project already uses for slides, so individual parts can be wrapped, class-tagged, or paired with Slidev/Vue directives for stepwise reveals and syntax or emphasis highlights.
+
 ## Viewport and readability check
 
 Before finishing presentation work, review every changed slide with these questions:
