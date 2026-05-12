@@ -2,8 +2,9 @@
 name: slidev-technical-presentations
 description: >-
   Guides authoring and revision of Slidev-based technical decks: progressive disclosure,
-  story-driven sections, viewport-safe layouts, high-contrast readable typography, concise
-  code, visual-first explanations, section micro-conclusions, and closing synthesis.
+  story-driven sections, viewport-safe layouts, high-contrast readable typography,
+  concise syntax-highlighted code, visual-first explanations, section micro-conclusions,
+  and closing synthesis.
   Use when the user creates, reviews, or restructures lecture slides, conference or meetup
   talks, workshops, `slides.md`, Slidev layouts/themes, or embedded diagrams and snippets
   in a Slidev project.
@@ -16,7 +17,7 @@ Use this skill when authoring or revising **live technical presentations** (talk
 ## Core principles
 
 - Build the presentation with Slidev unless the user explicitly asks for another format.
-- Prefer progressive disclosure both across slides and inside slides—but **each reveal should earn its place**. Too many `v-click` steps on one slide feels like a stutter; split into slides or merge low-value clicks.
+- Prefer progressive disclosure both across slides and inside slides—but **each reveal should earn its place**. Too many `v-click` steps on one slide feels like a stutter; split into slides or merge low-value clicks. **Progressive disclosure applies to code too:** for a medium-sized listing, the same snippet can unfold in narrative beats (what gets called first, what wraps it, what happens last) instead of showing the whole block at once.
 - Treat viewport overflow and tiny text as bugs. If a slide feels crowded, split it.
 - Treat scrollable text or code on slides as a design failure in most cases. Avoid it whenever possible.
 - Keep contrast high between background and foreground, and between neighboring visual elements. **Do not rely on color alone** for meaning (labels, icons, or patterns help colorblind viewers and cheap projectors).
@@ -64,6 +65,8 @@ Not every story needs all five beats, but the audience should always feel guided
 
 ## Code snippets
 
+**Syntax highlighting is mandatory.** Every real source listing must render with proper language grammar: use a **correct language tag** on markdown fences (e.g. ` ```typescript `, not a bare ` ``` ` or a vague `text` tag for code). If the deck uses HTML, Vue, or a Slidev code component instead of fences, configure it so Shiki (or the project’s highlighter) still applies to that block. Plain monospace without token colors is not acceptable for teaching code—fix the fence, component, or theme integration before shipping the slide.
+
 - Include only the code that is strictly necessary for the teaching point.
 - Omit imports, getters/setters, boilerplate, and unrelated branches unless they matter for the explanation.
 - Shorten names and surrounding context only if the meaning stays clear.
@@ -71,7 +74,9 @@ Not every story needs all five beats, but the audience should always feel guided
 - If the snippet is still too tall or dense, first remove non-essential lines. Then reformat it so it fits the viewport cleanly if possible.
 - If it still does not fit, split it across slides or replace part of it with a diagram or diff-style comparison instead of making the slide scroll.
 
-**Highlightable code in Slidev:** Structure samples so a person (or a later edit) can emphasize **specific** fragments—lines, tokens, or regions—not only the whole block. A single fenced markdown block (e.g. opening with ` ```java `) is one opaque unit and is awkward to annotate inside. Prefer HTML structure instead: elements such as `<div>`, `<span>`, `<pre>`, or markup the project already uses, so parts can be wrapped, class-tagged, or paired with Slidev/Vue directives for stepwise reveals and highlights.
+**Progressive disclosure inside one snippet:** When a listing is **medium-sized**—too much to absorb in one glance but still one coherent story—reveal it in **steps on a single slide** (or a tight sequence) so the speaker can narrate a path through the code. Example beats: “here we call this service,” “this runs inside the transactional method,” “finally we publish the message to Kafka.” The audience sees **one** logical code sample; each beat adds context or the next lines using Slidev primitives (`v-click`, line-level highlights, or patterns the repo already uses). Match the number of steps to the talk: fewer clicks for a fast section, more for a deep dive, but keep each step meaningful.
+
+**Highlightable, stepwise code in Slidev:** A single fenced markdown block is one opaque unit, which makes **per-line or per-fragment** reveals awkward. When you need emphasis or click-by-click disclosure **inside** the listing, use structured markup or Slidev/Vue patterns the project already employs (`<span>`/`v-click` wrappers, line highlighting, split fences under one `v-click` group, etc.) so **syntax highlighting is preserved**—do not fall back to unhighlighted text just to get clicks. If the project has no pattern yet, introduce the smallest structure that keeps both highlighting and reveals.
 
 ## Viewport and readability check
 
@@ -84,6 +89,7 @@ Before finishing presentation work, review every changed slide:
 5. Is any slide relying on scrollable text or code that should be trimmed, reformatted, or split instead?
 6. Would two slides communicate this better than one?
 7. Are click/reveal sequences smooth rather than tedious?
+8. Does every code listing use a **correct language** (or equivalent) so **syntax highlighting** actually appears in the built deck?
 
 If the answer is poor on any of these checks, fix the slide before considering the work done.
 
@@ -97,6 +103,6 @@ Before wrapping up, confirm:
 - Progressive disclosure used with restraint
 - Sections made of short stories, each with a micro-conclusion
 - Overall conclusions (and next steps if useful) at the end
-- High contrast, readable type, minimal code on slides
+- High contrast, readable type, minimal code on slides, **all code syntax-highlighted**
 - Visuals preferred over text where they shorten time-to-understanding
 - No overcrowded slides; no guessed scripts—commands taken from `package.json` or equivalent
