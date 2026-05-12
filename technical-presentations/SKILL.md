@@ -7,7 +7,7 @@ description: >-
   and closing synthesis.
   Use when the user creates, reviews, or restructures lecture slides, conference or meetup
   talks, workshops, `slides.md`, Slidev layouts/themes, or embedded diagrams and snippets
-  in a Slidev project.
+  in a Slidev project. Examples stay within a single declared domain.
 ---
 
 # Slidev technical presentations
@@ -24,13 +24,14 @@ Use this skill when authoring or revising **live technical presentations** (talk
 - Keep fonts large enough for people sitting far from the screen.
 - Prefer visuals over words whenever a concept can be shown instead of narrated.
 - Keep code snippets minimal: include only the lines needed to understand the point.
+- Ground **all** code examples in **one coherent domain** (see [Domain model](#domain-model)). Do not hop between unrelated toy domains across slides.
 - Break the deck into sections. End every section with micro-conclusions. End the whole deck with overall conclusions.
 - Build each section from short stories. One story should usually cover one concept or example in roughly **4–10 slides** (adjust for talk length; a 20-minute slot needs fewer beats than a tutorial block).
 
 ## Recommended workflow
 
 1. Read **`package.json`** (or the monorepo equivalent) for dev, build, export, and lint scripts. If present, skim **`slidev.config.ts`** / **`slidev.config.js`**, theme entry, and any shared slide components so new slides match project conventions.
-2. Start with a deck outline: audience, goal, and time budget. Put the **promise of the talk** early (why listen, what they can do after).
+2. Start with a deck outline: audience, goal, and time budget. Put the **promise of the talk** early (why listen, what they can do after). **Establish the active domain** for all code examples (see [Domain model](#domain-model)): take it from what the user said, or explicitly ask the user about it.
 3. Split the deck into sections.
 4. Inside each section, define short stories:
    - one story = one concept, mechanism, example, or comparison
@@ -63,6 +64,39 @@ Not every story needs all five beats, but the audience should always feel guided
 - If the deck already exists, preserve its voice and theme where practical, but improve clarity and pacing.
 - **Presenter notes:** When timing, demos, or caveats do not belong on the slide, use the project’s usual pattern (for example Slidev **`notes`** in slide frontmatter, or whatever the repo already uses). Do not cram speaker-only detail onto the canvas.
 
+## Domain model
+
+Code on slides should live in **one coherent domain** (the problem space the talk is about) so examples reinforce the same mental model instead of jumping between unrelated toy apps.
+
+### Establish the active domain
+
+Before writing or revising snippets, make the **active domain** explicit—at least for yourself, and on an early slide or in presenter notes if the audience needs it:
+
+- **Prefer a source of truth:** the user’s brief, an existing repo documentation, or entities and naming already present in the deck.
+- **If the domain is underspecified, ask** for the intended business context and core entities (or infer once from surrounding materials and state your assumption clearly).
+
+### Enriching the model
+
+You may extend the model when a teaching example needs it, as long as extensions stay credible for the **same** domain:
+
+- Add a **column or property** on an existing entity or table when the story needs it.
+- Add a **new entity or table** (or service, aggregate, etc.) when it fits that world.
+
+Do not introduce concepts that belong to a different industry or product just to illustrate a mechanism—express the mechanism with the domain you already chose.
+
+**IMPORTANT:** All examples (**without exception**) of code that you generate for the presentation—and any supporting code you create for the same deck—must operate **within the active domain**. No stray one-off domains, no generic `Foo`/`Bar` placeholders when a named in-domain concept would read naturally.
+
+### Example: how a domain block might look (illustration only)
+
+The following is **not** the default for this skill; it shows the *shape* of a domain description you might copy from a course or author for a specific deck:
+
+- Domain: **financial brokerage backend**
+- **`Security`** — a tradable instrument (e.g. NVDA stock).
+- **`Order`** — buy/sell instruction.
+- **`Transaction`** — execution of an order; transaction history.
+
+Enrichment in that world might add a property on `Order` or a new table such as **`Client`** (who places orders)—only because it fits *that* backend, not because every deck uses it.
+
 ## Code snippets
 
 **Syntax highlighting is mandatory.** Every real source listing must render with proper language grammar: use a **correct language tag** on markdown fences (e.g. ` ```typescript `, not a bare ` ``` ` or a vague `text` tag for code). If the deck uses HTML, Vue, or a Slidev code component instead of fences, configure it so Shiki (or the project’s highlighter) still applies to that block. Plain monospace without token colors is not acceptable for teaching code—fix the fence, component, or theme integration before shipping the slide.
@@ -90,6 +124,7 @@ Before finishing presentation work, review every changed slide:
 6. Would two slides communicate this better than one?
 7. Are click/reveal sequences smooth rather than tedious?
 8. Does every code listing use a **correct language** (or equivalent) so **syntax highlighting** actually appears in the built deck?
+9. Does every **code example** respect the **active** [domain](#domain-model) for this deck, with no stray off-domain toy scenarios?
 
 If the answer is poor on any of these checks, fix the slide before considering the work done.
 
@@ -106,3 +141,4 @@ Before wrapping up, confirm:
 - High contrast, readable type, minimal code on slides, **all code syntax-highlighted**
 - Visuals preferred over text where they shorten time-to-understanding
 - No overcrowded slides; no guessed scripts—commands taken from `package.json` or equivalent
+- **Domain:** all generated example code stays inside the active domain (see [Domain model](#domain-model)); no exceptions
