@@ -1,13 +1,13 @@
 ---
 name: slidev-technical-presentations
 description: >-
-  Guides authoring and revision of Slidev-based technical decks: progressive disclosure,
-  story-driven sections, viewport-safe layouts, high-contrast readable typography,
-  concise syntax-highlighted code, visual-first explanations, section micro-conclusions,
-  and closing synthesis.
-  Use when the user creates, reviews, or restructures lecture slides, conference or meetup
-  talks, workshops, `slides.md`, Slidev layouts/themes, or embedded diagrams and snippets
-  in a Slidev project. Examples stay within a single declared domain.
+   Guides authoring and revision of Slidev-based technical decks: progressive disclosure,
+   story-driven sections, viewport-safe layouts, high-contrast readable typography,
+   concise syntax-highlighted code, paired-column alignment via Slidev two-cols-header,
+   visual-first explanations, section micro-conclusions, and closing synthesis.
+   Use when the user creates, reviews, or restructures lecture slides, conference or meetup
+   talks, workshops, `slides.md`, Slidev layouts/themes, or embedded diagrams and snippets
+   in a Slidev project. Examples stay within a single declared domain.
 ---
 
 # Slidev technical presentations
@@ -63,6 +63,33 @@ Not every story needs all five beats, but the audience should always feel guided
 - Use standard Slidev layouts and markdown first. Reach for custom Vue components only when the default toolbox is not enough.
 - If the deck already exists, preserve its voice and theme where practical, but improve clarity and pacing.
 - **Presenter notes:** When timing, demos, or caveats do not belong on the slide, use the project’s usual pattern (for example Slidev **`notes`** in slide frontmatter, or whatever the repo already uses). Do not cram speaker-only detail onto the canvas.
+- **Paired columns with shared context:** If the slide needs full-width title or intro *and* two side-by-side blocks whose subheadings and code must line up horizontally, use the [`two-cols-header` pattern](#multi-column-alignment-two-cols-header-pattern) below—not plain `two-cols` with intro only on the left.
+
+## Multi-column alignment (`two-cols-header` pattern)
+
+Slidev’s default **`layout: two-cols`** renders everything before `::right::` inside the **left** column only. That is correct for many slides, but it breaks **visual comparison** slides: an intro paragraph or extra copy above the left snippet **pushes the left column’s headings and code downward** while the right column stays high—so the two sides no longer sit on the same baseline.
+
+**Preferred fix (validated in practice):** use **`layout: two-cols-header`**, which provides a **full-width header row** and then two equal columns beneath it.
+
+### Slot map
+
+1. **Default slot** — content *before* the first `::left::`: slide title (`# …`), optional full-width context (short paragraph, diagram caption, etc.). This row spans **both** columns.
+2. **`::left::`** — left column body only: subheading, fenced code, small diagram—whatever forms the **left half** of the comparison.
+3. **`::right::`** — right column body: same structure as the left; wrap in `v-click` when the second column should appear after the first.
+4. **`::bottom::`** (optional) — full-width row **below** both columns: takeaway line, caveat, or next `v-click` step without cramming it into one column or breaking vertical alignment of the pair above.
+
+### Frontmatter that usually works
+
+- `layoutClass: gap-x-10 gap-y-4 pt-2 items-start` — space between columns, light vertical rhythm between header and columns, **`items-start`** so the two column bodies align to the **top** of the middle grid row (avoids awkward vertical stretching).
+- `class: text-left` — when the theme defaults to centered body text, this keeps left/right (and bottom) slots consistently left-aligned for code comparisons.
+
+### When plain `two-cols` is still fine
+
+Use **`layout: two-cols`** when **both columns start with the same kind of stack**—no full-width intro that exists only above the left column. If you need a reveal on the right only, `two-cols` remains appropriate **as long as** you do not add left-only blocks that the right column does not mirror.
+
+### Anti-pattern
+
+Do **not** “fix” misalignment by duplicating **invisible** spacer blocks in the right column to mimic the left intro height. Line wrapping differs by column width; the layout drifts. Prefer **`two-cols-header`** and keep shared context in the default slot.
 
 ## Domain model
 
@@ -125,6 +152,7 @@ Before finishing presentation work, review every changed slide:
 7. Are click/reveal sequences smooth rather than tedious?
 8. Does every code listing use a **correct language** (or equivalent) so **syntax highlighting** actually appears in the built deck?
 9. Does every **code example** respect the **active** [domain](#domain-model) for this deck, with no stray off-domain toy scenarios?
+10. On **comparison** slides with two columns, do subheadings and code (or diagrams) **start at the same vertical position**? If full-width intro plus `two-cols` caused left-only offset, switch to [`two-cols-header`](#multi-column-alignment-two-cols-header-pattern).
 
 If the answer is poor on any of these checks, fix the slide before considering the work done.
 
@@ -142,3 +170,4 @@ Before wrapping up, confirm:
 - Visuals preferred over text where they shorten time-to-understanding
 - No overcrowded slides; no guessed scripts—commands taken from `package.json` or equivalent
 - **Domain:** all generated example code stays inside the active domain (see [Domain model](#domain-model)); no exceptions
+- **Side-by-side comparisons:** use [`two-cols-header`](#multi-column-alignment-two-cols-header-pattern) when shared context must sit above aligned paired columns; avoid fragile invisible spacers
